@@ -1,21 +1,5 @@
+include("../model/model.jl")
 
-function compute_nu_delta_lambda_gamma(model::DefiMarkovitzModel)::Tuple{Vector{Float64}, Float64, Float64, Float64}
-    nu = model.sigmas .* (model.longs .* model.liqthreshs .- model.shorts)
-    delta = sum(model.longs .* model.liqthreshs .- model.shorts)
-    lambda = sum((model.longs .* model.liqthreshs .- model.shorts) .* model.mus)
-    gamma = norm(model.sqrt_correlations * nu, 2)
-    @info "Successfully computed nu, delta, lambda, gamma\n   --> nu = $nu\n   --> delta = $delta\n   --> lambda = $lambda\n   --> gamma = $gamma"
-    return nu, delta, lambda, gamma
-end
-
-function compute_psi_phi(model::DefiMarkovitzModel)::Tuple{Float64, Float64}
-    avg_liq_bonus = sum(model.longs .* model.liqbonus) / sum(model.longs)
-    sum_longs = sum(model.longs)
-    sum_shorts = sum(model.shorts)
-    ψ = 1 - sum_shorts / sum_longs * avg_liq_bonus
-    ϕ = sum_shorts * (1 - avg_liq_bonus)
-    return ψ, ϕ
-end
 
 function compute_x_y_z(
     model::DefiMarkovitzModel, nu::Vector{Float64}, gamma::Float64, psi::Float64
