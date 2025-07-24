@@ -25,7 +25,7 @@ end
 
 function compute_c(model::DefiMarkovitzModel, psi::Float64, phi::Float64)::Tuple{Float64, Float64, Float64}
     c1 = transpose(model.weights) * (model.mus .+ model.apy) * model.horizon
-    c2 = - transpose(model.weights) * model.apy + psi * transpose(model.longs) * (model.mus .+ model.apy)
+    c2 = transpose(model.weights) * model.apy - psi * transpose(model.longs) * (model.mus .+ model.apy)
     c3 = transpose(psi .* model.longs .- model.weights) * (model.mus .+ model.apy) * model.horizon + phi
     @info "Successfully computed c\n   --> c1 = $c1\n   --> c2 = $c2\n   --> c3 = $c3"
     return c1, c2, c3

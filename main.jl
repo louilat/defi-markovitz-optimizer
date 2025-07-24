@@ -36,9 +36,9 @@ end
 M1, M2 = full_simulation()
 
 plot1 = histogram(M1; fmt = :png)
-plot!([0.8503], seriestype = :vline)
+plot!([0.8229], seriestype = :vline)
 plot2 = histogram(M2; fmt = :png)
-plot!([2.4197], seriestype = :vline)
+plot!([2.4170], seriestype = :vline)
 
 savefig(plot1, "plot1.png")
 savefig(plot2, "plot2.png")

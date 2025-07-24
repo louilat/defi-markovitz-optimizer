@@ -63,7 +63,7 @@ function compute_simulated_return(
     W_tau = diagm(model.sigmas) * W[:, idx]
     tau = steps[idx]
     term2 = - ψ * transpose(model.longs) * W_tau
-    term3 = - (transpose(model.weights) * model.apy - ψ * transpose(model.longs) * (model.mus .+ model.apy)) * tau
+    term3 = (transpose(model.weights) * model.apy - ψ * transpose(model.longs) * (model.mus .+ model.apy)) * tau
     term4 = transpose(ψ * model.longs .- model.weights) * (model.mus .+ model.apy) * model.horizon + ϕ
     return term0 + term1 + term2 + term3 + term4
 end

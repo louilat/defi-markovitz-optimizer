@@ -1,5 +1,4 @@
 using Test
-using TestItems
 
 include("../../src/model/model.jl")
 include("../../src/computation/parameters.jl")
@@ -54,7 +53,7 @@ c1, c2, c3 = compute_c(model, ψ, ϕ)
 
 @testset "c1 c2 c3 parameters" begin
     @test c1 ≈ 1.5686 atol=0.001
-    @test c2 ≈ 0.0915 atol=0.001
+    @test c2 ≈ -0.0915 atol=0.001
     @test c3 ≈ -1.5169 atol=0.001
 end
 
@@ -72,7 +71,7 @@ end
 M1 = compute_first_order_moment_return(c1, c2, c3, η, δ, λ, γ, y1, z1, I0, I1)
 
 @testset "First-order moment" begin
-    @test M1 ≈ 0.8503 atol=0.001
+    @test M1 ≈ 0.8229 atol=0.001
 end
 
 Λ0, Λ1, Λ2, Λ3, Λ4, Λ5, Λ6 = compute_all_lambdas(
@@ -96,15 +95,15 @@ end
 @testset "Λ parameters" begin
     @test Λ0 ≈ 4.4634 atol=0.001
     @test Λ1 ≈ -2.4496 atol=0.001
-    @test Λ2 ≈ -0.003 atol=0.001
-    @test Λ3 ≈ 0.0365 atol=0.001
+    @test Λ2 ≈ -0.0341 atol=0.001
+    @test Λ3 ≈ 0.000 atol=0.001
     @test Λ4 ≈ -3.064 atol=0.001
-    @test Λ5 ≈ 0.0503 atol=0.001
+    @test Λ5 ≈ 0.0021 atol=0.001
     @test Λ6 ≈ -0.9505 atol=0.001
 end
 
 M2 = compute_second_order_moment_return(η, δ, γ, Λ0, Λ1, Λ2, Λ3, Λ4, Λ5, Λ6, I0, I1, I2, T)
 
 @testset "Second-order moment" begin
-    @test M2 ≈ 2.4197 atol=0.001
+    @test M2 ≈ 2.4170 atol=0.001
 end
