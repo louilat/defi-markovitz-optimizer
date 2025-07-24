@@ -1,6 +1,7 @@
 include("src/simulation/return.jl")
 
 using Threads
+using Plots
 
 T = 2.
 C = [1 .5 .3; .5 1 .4; .3 .4 1]
@@ -32,5 +33,13 @@ end
 
 M1, M2 = full_simulation()
 
-println(M1)
-println(M2)
+plot1 = histogram(M1; fmt = :png)
+plot!([0.8503], seriestype = :vline)
+plot2 = histogram(M1; fmt = :png)
+plot!([2.4197], seriestype = :vline)
+
+savefig(plot1, "plot1.png")
+savefig(plot2, "plot2.png")
+
+# println(M1)
+# println(M2)
