@@ -32,14 +32,14 @@ function compute_tau(model::DefiMarkovitzModel, P::Matrix{Float64}, steps::Vecto
     hf = vec(numerator ./ denominator)
     min_ = minimum(hf)
     max_ = maximum(hf)
-    @info "Min hf = $min_\nMax hf = $max_"
+    # @info "Min hf = $min_\nMax hf = $max_"
     idx = findfirst(<=(1), hf)
     if isnothing(idx)
-        @info "No liquidations found"
+        # @info "No liquidations found"
         return Inf, idx
     else
         τ = steps[idx]
-        @info "Liquidation at time $τ"
+        # @info "Liquidation at time $τ"
         return τ, idx
     end
 end
