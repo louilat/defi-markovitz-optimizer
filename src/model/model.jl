@@ -45,20 +45,25 @@ function DefiMarkovitzModel(
     )
 end
 
-function compute_nu_delta_lambda_gamma(model::DefiMarkovitzModel)::Tuple{Vector{Float64}, Float64, Float64, Float64}
+function compute_nu_delta_lambda_gamma(model::DefiMarkovitzModel; verbose = true)::Tuple{Vector{Float64}, Float64, Float64, Float64}
     nu = model.sigmas .* (model.longs .* model.liqthreshs .- model.shorts)
     delta = sum(model.longs .* model.liqthreshs .- model.shorts)
     lambda = sum((model.longs .* model.liqthreshs .- model.shorts) .* model.mus)
     gamma = norm(model.sqrt_correlations * nu, 2)
-    @info "Successfully computed nu, delta, lambda, gamma\n   --> nu = $nu\n   --> delta = $delta\n   --> lambda = $lambda\n   --> gamma = $gamma"
+    if verbose
+        @info "Successfully computed nu, delta, lambda, gamma\n   --> nu = $nu\n   --> delta = $delta\n   --> lambda = $lambda\n   --> gamma = $gamma"
+    end
     return nu, delta, lambda, gamma
 end
 
-function compute_psi_phi(model::DefiMarkovitzModel)::Tuple{Float64, Float64}
+function compute_psi_phi(model::DefiMarkovitzModel; verbose = true)::Tuple{Float64, Float64}
     avg_liq_bonus = sum(model.longs .* model.liqbonus) / sum(model.longs)
     sum_longs = sum(model.longs)
     sum_shorts = sum(model.shorts)
     ψ = 1 - sum_shorts / sum_longs * avg_liq_bonus
     ϕ = sum_shorts * (1 - avg_liq_bonus)
+    if verbose
+        @info "Successfully computed psi and phi\n   --> psi = $ψ\n   --> phi = $ϕ"
+    end
     return ψ, ϕ
 end

@@ -2,7 +2,7 @@ include("../model/model.jl")
 
 
 function compute_x_y_z(
-    model::DefiMarkovitzModel, nu::Vector{Float64}, gamma::Float64, psi::Float64
+    model::DefiMarkovitzModel, nu::Vector{Float64}, gamma::Float64, psi::Float64; verbose = true
 )::Tuple{Float64, Float64, Float64, Float64, Float64, Float64, Float64, Float64}
     K = diagm(model.sigmas) * model.correlations * diagm(model.sigmas)
     norm_x = transpose(model.weights) * K * model.weights
@@ -19,15 +19,19 @@ function compute_x_y_z(
     x_dot_y = transpose(model.weights) * K * (psi * model.longs .- model.weights)
     x_plus_y_dot_z = -psi^2 * transpose(model.longs) * K * model.longs
 
-    @info "Successfully computed x and y\n   --> norm_x = $norm_x\n   --> x1 = $x1\n   --> norm_y = $norm_y\n   --> y1 = $y1\n   --> (x|y) = $x_dot_y"
+    if verbose
+        @info "Successfully computed x and y\n   --> norm_x = $norm_x\n   --> x1 = $x1\n   --> norm_y = $norm_y\n   --> y1 = $y1\n   --> (x|y) = $x_dot_y"
+    end
     return norm_x, x1, norm_y, y1, norm_z, z1, x_dot_y, x_plus_y_dot_z
 end
 
-function compute_c(model::DefiMarkovitzModel, psi::Float64, phi::Float64)::Tuple{Float64, Float64, Float64}
+function compute_c(model::DefiMarkovitzModel, psi::Float64, phi::Float64; verbose = true)::Tuple{Float64, Float64, Float64}
     c1 = transpose(model.weights) * (model.mus .+ model.apy) * model.horizon
     c2 = transpose(model.weights) * model.apy - psi * transpose(model.longs) * (model.mus .+ model.apy)
     c3 = transpose(psi .* model.longs .- model.weights) * (model.mus .+ model.apy) * model.horizon + phi
-    @info "Successfully computed c\n   --> c1 = $c1\n   --> c2 = $c2\n   --> c3 = $c3"
+    if verbose
+        @info "Successfully computed c\n   --> c1 = $c1\n   --> c2 = $c2\n   --> c3 = $c3"
+    end
     return c1, c2, c3
 end
 
